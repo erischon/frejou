@@ -16,19 +16,19 @@ const routes = [
     label: "Dashboard",
     icon: LayoutDashboard,
     href: "/dashboard",
-    color: "text-sky-500",
+    color: "text-sky-400",
   },
   {
     label: "Transaction",
     icon: ArrowRightLeft,
     href: "/conversation",
-    color: "text-violet-500",
+    color: "text-sky-400",
   },
   {
     label: "Compte",
     icon: PiggyBank,
     href: "/image",
-    color: "text-pink-700",
+    color: "text-sky-400",
   },
 ];
 
