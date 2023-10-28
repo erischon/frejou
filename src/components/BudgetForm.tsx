@@ -10,34 +10,46 @@ type FormValues = {
   investment: number;
 };
 
-const formInputs = [
-  {
-    label: "Budget total",
-    id: "totalBudget",
-    register: { required: "Le budget total est requis" },
-  },
-  {
-    label: "Charges",
-    id: "expenses",
-  },
-  {
-    label: "Loisirs",
-    id: "entertainment",
-  },
-  {
-    label: "Epargne",
-    id: "savings",
-  },
-  {
-    label: "Investissement",
-    id: "investment",
-  },
-];
-
 export function BudgetForm() {
   const form = useForm<FormValues>();
-  const { register, handleSubmit, formState } = form;
+  const { register, handleSubmit, formState, setValue } = form;
   const { errors } = formState;
+
+  const formInputs = [
+    {
+      label: "Budget total",
+      id: "totalBudget",
+      register: {
+        required: "Le budget total est requis",
+        onChange: (e: any) => handleTotalBudget(e),
+      },
+    },
+    {
+      label: "Charges",
+      id: "expenses",
+    },
+    {
+      label: "Loisirs",
+      id: "entertainment",
+    },
+    {
+      label: "Epargne",
+      id: "savings",
+    },
+    {
+      label: "Investissement",
+      id: "investment",
+    },
+  ];
+
+  const handleTotalBudget = (e: any) => {
+    console.log("=== on change", e.target.value);
+
+    setValue("expenses", (e.target.value * 60) / 100);
+    setValue("entertainment", (e.target.value * 20) / 100);
+    setValue("savings", (e.target.value * 15) / 100);
+    setValue("investment", (e.target.value * 5) / 100);
+  };
 
   const onSubmit = (data: FormValues) => {
     console.log("=== Form submitted", data);
@@ -59,9 +71,11 @@ export function BudgetForm() {
               <input
                 type="number"
                 id={input.id}
-                {...register(input.id, input.register)}
+                {...register(input.id as keyof FormValues, input.register)}
               />
-              <p className="error">{errors[input.id]?.message}</p>
+              <p className="error">
+                {errors[input.id as keyof FormValues]?.message}
+              </p>
             </div>
           ))}
         </div>
