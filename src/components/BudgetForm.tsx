@@ -10,6 +10,30 @@ type FormValues = {
   investment: number;
 };
 
+const formInputs = [
+  {
+    label: "Budget total",
+    id: "totalBudget",
+    register: { required: "Le budget total est requis" },
+  },
+  {
+    label: "Charges",
+    id: "expenses",
+  },
+  {
+    label: "Loisirs",
+    id: "entertainment",
+  },
+  {
+    label: "Epargne",
+    id: "savings",
+  },
+  {
+    label: "Investissement",
+    id: "investment",
+  },
+];
+
 export function BudgetForm() {
   const form = useForm<FormValues>();
   const { register, handleSubmit, formState } = form;
@@ -29,40 +53,17 @@ export function BudgetForm() {
         className="flex flex-col gap-3"
       >
         <div>
-          <label htmlFor="totalBudget">Budget total</label>
-          <input
-            type="number"
-            id="totalBudget"
-            {...register("totalBudget", {
-              required: "Le budget total est requis",
-            })}
-          />
-
-          <p className="error">{errors.totalBudget?.message}</p>
-        </div>
-
-        <div>
-          <label htmlFor="expenses">Charges</label>
-          <input type="number" id="expenses" {...register("expenses")} />
-        </div>
-
-        <div>
-          <label htmlFor="entertainment">Loisirs</label>
-          <input
-            type="number"
-            id="entertainment"
-            {...register("entertainment")}
-          />
-        </div>
-
-        <div>
-          <label htmlFor="savings">Epargne</label>
-          <input type="number" id="savings" {...register("savings")} />
-        </div>
-
-        <div>
-          <label htmlFor="investment">Investissement</label>
-          <input type="number" id="investment" {...register("investment")} />
+          {formInputs.map((input, k) => (
+            <div key={k}>
+              <label htmlFor={input.id}>{input.label}</label>
+              <input
+                type="number"
+                id={input.id}
+                {...register(input.id, input.register)}
+              />
+              <p className="error">{errors[input.id]?.message}</p>
+            </div>
+          ))}
         </div>
 
         <button>Submit</button>
