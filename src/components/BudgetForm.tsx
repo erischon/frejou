@@ -17,28 +17,24 @@ export function BudgetForm() {
 
   const formInputs = [
     {
-      label: "Budget total",
-      id: "totalBudget",
-      register: {
-        required: "Le budget total est requis",
-        onChange: (e: any) => handleTotalBudget(e),
-      },
-    },
-    {
       label: "Charges",
       id: "expenses",
+      register: {},
     },
     {
       label: "Loisirs",
       id: "entertainment",
+      register: {},
     },
     {
       label: "Epargne",
       id: "savings",
+      register: {},
     },
     {
       label: "Investissement",
       id: "investment",
+      register: {},
     },
   ];
 
@@ -55,13 +51,31 @@ export function BudgetForm() {
 
   return (
     <div>
-      <h1 className="text-2xl">Budget Mai 2023</h1>
+      <h1 className="text-3xl font-semibold">Budget Mai 2023</h1>
 
       <form
         onSubmit={handleSubmit(onSubmit)}
         noValidate
-        className="flex flex-col gap-3"
+        className="flex flex-col gap-3 my-10"
       >
+        <div>
+          <label htmlFor={"totalBudget"} className="text-xl font-semibold">
+            Budget total
+          </label>
+          <input
+            type="number"
+            id={"totalBudget"}
+            {...register("totalBudget" as keyof FormValues, {
+              required: "Le budget total est requis",
+              onChange: (e: any) => handleTotalBudget(e),
+            })}
+            className="focus:outline-none focus:ring-0 focus:border-b-2 border-b-2 border-slate-800 focus:border-slate-400"
+          />
+          <p className="error">
+            {errors["totalBudget" as keyof FormValues]?.message}
+          </p>
+        </div>
+
         <div>
           {formInputs.map((input, k) => (
             <div key={k}>

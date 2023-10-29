@@ -25,9 +25,9 @@ const routes = [
     color: "text-sky-400",
   },
   {
-    label: "Compte",
+    label: "Budget",
     icon: PiggyBank,
-    href: "/image",
+    href: "/budget",
     color: "text-sky-400",
   },
 ];
@@ -52,7 +52,7 @@ const Sidebar = () => {
           {routes.map((route) => (
             <Link
               key={route.href}
-              href="route.href"
+              href={route.href}
               className={cn(
                 "text-sm group flex p-3 w-full justify-start font-medium cursor-pointer hover:white hover:bg-white/10 rounded-lg transition",
                 pathname === route.href
