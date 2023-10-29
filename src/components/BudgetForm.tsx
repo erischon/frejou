@@ -43,8 +43,6 @@ export function BudgetForm() {
   ];
 
   const handleTotalBudget = (e: any) => {
-    console.log("=== on change", e.target.value);
-
     setValue("expenses", (e.target.value * 60) / 100);
     setValue("entertainment", (e.target.value * 20) / 100);
     setValue("savings", (e.target.value * 15) / 100);
@@ -57,7 +55,7 @@ export function BudgetForm() {
 
   return (
     <div>
-      <h1>Budget Mai 2023</h1>
+      <h1 className="text-2xl">Budget Mai 2023</h1>
 
       <form
         onSubmit={handleSubmit(onSubmit)}
