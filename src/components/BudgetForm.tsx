@@ -50,7 +50,7 @@ export function BudgetForm() {
   };
 
   return (
-    <div>
+    <main className="max-w-md">
       <h1 className="text-3xl font-semibold">Budget Mai 2023</h1>
 
       <form
@@ -58,10 +58,11 @@ export function BudgetForm() {
         noValidate
         className="flex flex-col gap-3 my-10"
       >
-        <div>
+        <div className="grid grid-cols-2 w-full">
           <label htmlFor={"totalBudget"} className="text-xl font-semibold">
             Budget total
           </label>
+
           <input
             type="number"
             id={"totalBudget"}
@@ -69,7 +70,7 @@ export function BudgetForm() {
               required: "Le budget total est requis",
               onChange: (e: any) => handleTotalBudget(e),
             })}
-            className="focus:outline-none focus:ring-0 focus:border-b-2 border-b-2 border-slate-800 focus:border-slate-400"
+            className="w-16 text-lg focus:outline-none focus:ring-0 focus:border-b-2 border-b-2 border-slate-800 focus:border-slate-400"
           />
           <p className="error">
             {errors["totalBudget" as keyof FormValues]?.message}
@@ -94,6 +95,6 @@ export function BudgetForm() {
 
         <button>Submit</button>
       </form>
-    </div>
+    </main>
   );
 }
