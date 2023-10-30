@@ -2,12 +2,15 @@
 
 import { useForm } from "react-hook-form";
 
+import { addBudget } from "@/utils/addBudget";
+
 type FormValues = {
+  month: Date | string;
   totalBudget: number;
   expenses: number;
   entertainment: number;
   savings: number;
-  investment: number;
+  investments: number;
 };
 
 export function BudgetForm() {
@@ -19,34 +22,52 @@ export function BudgetForm() {
     {
       label: "Charges",
       id: "expenses",
-      register: {},
+      register: {
+        valueAsNumber: true,
+      },
+      percent: 60,
     },
     {
       label: "Loisirs",
       id: "entertainment",
-      register: {},
+      register: {
+        valueAsNumber: true,
+      },
+      percent: 20,
     },
     {
       label: "Epargne",
       id: "savings",
-      register: {},
+      register: {
+        valueAsNumber: true,
+      },
+      percent: 15,
     },
     {
       label: "Investissement",
-      id: "investment",
-      register: {},
+      id: "investments",
+      register: {
+        valueAsNumber: true,
+      },
+      percent: 5,
     },
   ];
 
   const handleTotalBudget = (e: any) => {
-    setValue("expenses", (e.target.value * 60) / 100);
-    setValue("entertainment", (e.target.value * 20) / 100);
-    setValue("savings", (e.target.value * 15) / 100);
-    setValue("investment", (e.target.value * 5) / 100);
+    formInputs.forEach((input) => {
+      setValue(
+        input.id as keyof FormValues,
+        (e.target.value * input.percent) / 100
+      );
+    });
   };
 
   const onSubmit = (data: FormValues) => {
     console.log("=== Form submitted", data);
+
+    data.month = new Date("11/01/2023");
+
+    addBudget(data);
   };
 
   return (
@@ -69,9 +90,11 @@ export function BudgetForm() {
             {...register("totalBudget" as keyof FormValues, {
               required: "Le budget total est requis",
               onChange: (e: any) => handleTotalBudget(e),
+              valueAsNumber: true,
             })}
-            className="w-16 text-lg focus:outline-none focus:ring-0 focus:border-b-2 border-b-2 border-slate-800 focus:border-slate-400"
+            className="w-16 text-lg text-right focus:outline-none focus:ring-0 focus:border-b-2 border-b-2 border-slate-800 focus:border-slate-400 "
           />
+
           <p className="error">
             {errors["totalBudget" as keyof FormValues]?.message}
           </p>
@@ -79,12 +102,15 @@ export function BudgetForm() {
 
         <div>
           {formInputs.map((input, k) => (
-            <div key={k}>
-              <label htmlFor={input.id}>{input.label}</label>
+            <div key={k} className="grid grid-cols-2 w-full">
+              <label htmlFor={input.id}>{`Budget ${input.label}`}</label>
+
               <input
                 type="number"
                 id={input.id}
                 {...register(input.id as keyof FormValues, input.register)}
+                readOnly={true}
+                className="w-16 text-lg text-right focus:outline-none focus:ring-0"
               />
               <p className="error">
                 {errors[input.id as keyof FormValues]?.message}
@@ -93,7 +119,9 @@ export function BudgetForm() {
           ))}
         </div>
 
-        <button>Submit</button>
+        <button className="bg-sky-600 text-lg font-semibold text-sky-50 py-2 px-6 shadow-md w-fit mx-auto">
+          Submit
+        </button>
       </form>
     </main>
   );
