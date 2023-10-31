@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { addBudget } from "@/utils/addBudget";
 
 type FormValues = {
-  month: Date | string;
+  month: Date;
   totalBudget: number;
   expenses: number;
   entertainment: number;
@@ -13,10 +13,14 @@ type FormValues = {
   investments: number;
 };
 
+const CURRENT_MONTH = new Date();
+
 export function BudgetForm() {
   const form = useForm<FormValues>();
   const { register, handleSubmit, formState, setValue } = form;
   const { errors } = formState;
+
+  console.log(CURRENT_MONTH);
 
   const formInputs = [
     {
@@ -63,11 +67,12 @@ export function BudgetForm() {
   };
 
   const onSubmit = (data: FormValues) => {
-    console.log("=== Form submitted", data);
-
-    data.month = new Date("11/01/2023");
+    console.log(CURRENT_MONTH);
+    data.month = CURRENT_MONTH;
 
     addBudget(data);
+
+    console.log("=== Form submitted", data);
   };
 
   return (
