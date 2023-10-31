@@ -1,10 +1,12 @@
 "use client";
 
 import { useForm } from "react-hook-form";
+import { useUser } from "@clerk/nextjs";
 
 import { addBudget } from "@/utils/addBudget";
 
 type FormValues = {
+  user: string;
   month: Date;
   totalBudget: number;
   expenses: number;
@@ -19,8 +21,9 @@ export function BudgetForm() {
   const form = useForm<FormValues>();
   const { register, handleSubmit, formState, setValue } = form;
   const { errors } = formState;
+  const { user } = useUser();
 
-  console.log(CURRENT_MONTH);
+  if (!user) return null;
 
   const formInputs = [
     {
@@ -67,7 +70,7 @@ export function BudgetForm() {
   };
 
   const onSubmit = (data: FormValues) => {
-    console.log(CURRENT_MONTH);
+    data.user = user?.id;
     data.month = CURRENT_MONTH;
 
     addBudget(data);

@@ -13,8 +13,6 @@ async function FirebaseSignin() {
 
   signInWithCustomToken(auth, firebaseToken).then((userCredential) => {
     const user = userCredential.user;
-
-    console.log("=== User", user);
   });
 }
 

@@ -11,8 +11,6 @@ export default function DashboardPage() {
     const budgets = async () => {
       const data = await getBudgets();
 
-      console.log(data);
-
       setBudgets(data);
     };
 
@@ -26,8 +24,6 @@ export default function DashboardPage() {
 
         {budgets.map((data: any, k) => {
           const day = dayjs.unix(data?.budget?.month.seconds);
-
-          console.log(day, typeof day);
 
           return (
             <div key={k} className="flex flex-col">
