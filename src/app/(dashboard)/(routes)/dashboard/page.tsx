@@ -20,7 +20,7 @@ export default function DashboardPage() {
   return (
     <>
       <div>
-        <h1>Dashboard</h1>
+        <h1 className="text-xl font-semibold">Dashboard</h1>
 
         {budgets.map((data: any, k) => {
           const day = dayjs.unix(data?.budget?.month.seconds);
