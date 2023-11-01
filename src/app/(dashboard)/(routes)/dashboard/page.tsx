@@ -1,63 +1,40 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
-import { Card } from "@/components/ui/card";
-import {
-  ArrowRight,
-  Code,
-  ImageIcon,
-  MessageSquare,
-  Music,
-  VideoIcon,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
-
-const tools = [
-  {
-    label: "Conversation",
-    icon: MessageSquare,
-    color: "text-violet-500",
-    bgColor: "bg-violet-500/10",
-    href: "/conversation",
-  },
-];
+import { useState, useEffect } from "react";
+import { getBudgets } from "@/utils/getBudgets";
+import dayjs from "dayjs";
 
 export default function DashboardPage() {
-  const router = useRouter();
+  const [budgets, setBudgets] = useState([]);
+
+  useEffect(() => {
+    const budgets = async () => {
+      const data = await getBudgets();
+
+      setBudgets(data);
+    };
+
+    budgets();
+  }, []);
 
   return (
     <>
       <div>
-        <div className="mb-8 space-y-4">
-          <h2 className="text-2xl md:text-4xl font-bold text-center">
-            Explore the power of AI
-          </h2>
+        <h1 className="text-xl font-semibold">Dashboard</h1>
 
-          <p className="text-muted-forground font-light text-sm md:text-lg text-center">
-            Chat with the smartest AI - Experience the power of AI
-          </p>
-        </div>
+        {budgets.map((data: any, k) => {
+          const day = dayjs.unix(data?.budget?.month.seconds);
 
-        <div className="px-4 md:px-20 lg:px-32 space-y-4">
-          {tools.map((tool) => (
-            <Card
-              key={tool.href}
-              className="p-4 border-black/5 flex items-center justify-between hover:shadow-md transition cursor-pointer"
-              onClick={() => router.push(tool?.href)}
-            >
-              <div className="flex items-center gap-x-4">
-                <div className={cn("p-2 w-fit rounded-md", tool.bgColor)}>
-                  <tool.icon className={cn("w-8 h-8", tool.color)} />
-                </div>
-
-                <div className="font-semibold">{tool.label}</div>
-              </div>
-
-              <ArrowRight className="w-5 h-5" />
-            </Card>
-          ))}
-        </div>
+          return (
+            <div key={k} className="flex flex-col">
+              <div>{`${dayjs(day).format("MMMM YYYY")}`}</div>
+              <div>{`Budget Total : ${data?.budget?.totalBudget}`}</div>
+              <div>{`Charges : ${data?.budget?.expenses}`}</div>
+              <div>{`Loisirs : ${data?.budget?.entertainment}`}</div>
+              <div>{`Epargne : ${data?.budget?.savings}`}</div>
+            </div>
+          );
+        })}
       </div>
     </>
   );
